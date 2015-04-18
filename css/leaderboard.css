@@ -55,3 +55,11 @@
     background-color: #00FF00;
 
 }
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 350px;
+  width: 90%;
+}
