@@ -16,6 +16,7 @@
                 <tr>
                     <th>Lane</th>
                     <th>Contestant</th>
+                    <th>Horse</th>
                     <th>Score</th>
                     <th></th>
                 </tr>
@@ -24,6 +25,7 @@
                 <tr ng-repeat="contestant in main.contestants">
                     <td><input type="text" ng-model="contestant.lane" ng-blur="main.updateContestant(contestant)"/></td>
                     <td><input type="text" ng-model="contestant.name" ng-blur="main.updateContestant(contestant)"/></td>
+                    <td><input type="text" ng-model="contestant.horse" ng-blur="main.updateContestant(contestant)"/></td>
                     <td><input type="text" ng-model="contestant.score" ng-blur="main.updateContestant(contestant)"/></td>
                     <td>
                         <button type="button" class="btn btn-link" ng-click="main.removeContestant(contestant)">Remove</button>
@@ -43,6 +45,9 @@
                         <input type="text" class="form-control" ng-model="main.newContestant.name" placeholder="Contestant Name">
                     </div>
                     <div class="form-group">
+                        <input type="text" class="form-control" ng-model="main.newContestant.horse" placeholder="Contestant Horse">
+                    </div>
+                    <div class="form-group">
                         <input type="text" class="form-control" ng-model="main.newContestant.score" placeholder="Contestant Score">
                     </div>
                     <button type="submit" class="btn btn-default">Add</button>
@@ -50,6 +55,57 @@
             </div>
         </div>
 
+        <!--  -->
+
+        <div class="container" ng-controller="HorseCtrl as main">
+            <h3>Horse Admin</h3>
+
+            <table class="table edit">
+                <thead>
+                <tr>
+                    <th>Lane</th>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Position</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="horse in main.horses">
+                    <td><input type="text" ng-model="horse.lane" ng-blur="main.updateHorse(horse)"/></td>
+                    <td><input type="text" ng-model="horse.name" ng-blur="main.updateHorse(horse)"/></td>
+                    <td><input type="text" ng-model="horse.horse" ng-blur="main.updateHorse(horse)"/></td>
+                    <td><input type="text" ng-model="horse.position" ng-blur="main.updateHorse(horse)"/></td>
+                    <td>
+                        <button type="button" class="btn btn-link" ng-click="main.removeHorse(horse)">Remove</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="well">
+                <h4>Add Horse</h4>
+
+                <form class="form-inline" role="form" novalidate ng-submit="main.addHorse()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="main.newHorse.lane" placeholder="Enter lane">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="main.newHorse.name" placeholder="Horse Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="main.newHorse.horse" placeholder="Rating">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="main.newHorse.score" placeholder="Position">
+                    </div>
+                    <button type="submit" class="btn btn-default">Add</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!--  -->
 
         <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
