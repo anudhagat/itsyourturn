@@ -1,0 +1,9 @@
+{
+  "firebase": "glaring-heat-3992",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
