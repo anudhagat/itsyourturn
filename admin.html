@@ -17,12 +17,12 @@
                     <th>Lane</th>
                     <th>Contestant</th>
                     <th>Horse</th>
-                    <th>Score</th>
+                    <th>Bid</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="contestant in main.contestants">
+                <tr ng-repeat="contestant in main.contestants" ng-class="{winner: contestant.isWinner}">
                     <td><input type="text" ng-model="contestant.lane" ng-blur="main.updateContestant(contestant)"/></td>
                     <td><input type="text" ng-model="contestant.name" ng-blur="main.updateContestant(contestant)"/></td>
                     <td><input type="text" ng-model="contestant.horse" ng-blur="main.updateContestant(contestant)"/></td>
@@ -74,7 +74,7 @@
                 <tr ng-repeat="horse in main.horses">
                     <td><input type="text" ng-model="horse.lane" ng-blur="main.updateHorse(horse)"/></td>
                     <td><input type="text" ng-model="horse.name" ng-blur="main.updateHorse(horse)"/></td>
-                    <td><input type="text" ng-model="horse.horse" ng-blur="main.updateHorse(horse)"/></td>
+                    <td><input type="text" ng-model="horse.rating" ng-blur="main.updateHorse(horse)"/></td>
                     <td><input type="text" ng-model="horse.position" ng-blur="main.updateHorse(horse)"/></td>
                     <td>
                         <button type="button" class="btn btn-link" ng-click="main.removeHorse(horse)">Remove</button>
@@ -94,10 +94,10 @@
                         <input type="text" class="form-control" ng-model="main.newHorse.name" placeholder="Horse Name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="main.newHorse.horse" placeholder="Rating">
+                        <input type="text" class="form-control" ng-model="main.newHorse.rating" placeholder="Rating">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="main.newHorse.score" placeholder="Position">
+                        <input type="text" class="form-control" ng-model="main.newHorse.position" placeholder="Position">
                     </div>
                     <button type="submit" class="btn btn-default">Add</button>
                 </form>

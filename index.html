@@ -8,6 +8,36 @@
         <link href="css/leaderboard.css" rel="stylesheet" />
     </head>
     <body>
+        <div class="container" ng-controller="HorseCtrl as main">
+            <h3>Race to Awesome</h3>
+            <div class="well">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Lane</th>
+                        <th>Horse Name</th>
+                        <th>Rating</th>
+                        <th>Position</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="horse in main.horses" >
+                        <td>{{horse.lane}}</td>
+                        <td>{{horse.name}}</td>
+                        <td>{{horse.rating}}</td>
+                        <td>{{horse.position}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        <div>
+            <button ng-click="main.startRace(100)">Start Race</button>
+        </div>
+        </div>
+
+
+
         <div class="container" ng-controller="MainCtrl as main">
             <h3>Race to Awesome</h3>
             <div class="well">
@@ -17,15 +47,18 @@
                         <th>Lane</th>
                         <th>Contestant</th>
                         <th>Horse</th>
-                        <th>Score</th>
+                        <th>Bid</th>
+                        <th>Balance</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contestant in main.contestants">
+                    <tr ng-repeat="contestant in main.contestants" ng-class="{winner: contestant.isWinner}">
                         <td>{{contestant.lane}}</td>
                         <td>{{contestant.name}}</td>
                         <td>{{contestant.horse}}</td>
                         <td>{{contestant.score}}</td>
+                        <td>{{contestant.balance}}</td>
+                        <td ng-show="contestant.isWinner">Winner!</td>
                     </tr>
                     </tbody>
                 </table>

@@ -5,13 +5,13 @@ app.constant('FIREBASE_URI', 'https://glaring-heat-3992.firebaseio.com/');
 
 app.controller('MainCtrl', function (ContestantsService) {
     var main = this;
-    main.newContestant = {lane: '', name: '', horse: '', score: ''};
+    main.newContestant = {lane: '', name: '', horse: '', score: '', balance: 100,isWinner: 'false'};
     main.currentContestant = null;
     main.contestants = ContestantsService.getContestants();
 
     main.addContestant = function () {
         ContestantsService.addContestant(angular.copy(main.newContestant));
-        main.newContestant = {lane: '', name: '', horse: '', score: ''};
+        main.newContestant = {lane: '', name: '', horse: '', score: '', balance: 100,isWinner: 'false'};
     }; 
 
     main.updateContestant = function (contestant) {
@@ -36,36 +36,36 @@ app.controller('MainCtrl', function (ContestantsService) {
 app.service('ContestantsService', function ($firebaseArray, FIREBASE_URI) {
     var service = this;
     var ref = new Firebase(FIREBASE_URI + "/contestants");
-    var contestants = $firebaseArray(ref);
+    this.contestants = $firebaseArray(ref);
 
     service.getContestants = function () {
-        return contestants;
+        return this.contestants;
     };
 
     service.addContestant = function (contestant) {
-        contestants.$add(contestant);
+        this.contestants.$add(contestant);
     };
 
     service.updateContestant = function (contestant) {
-        contestants.$save(contestant);
+        this.contestants.$save(contestant);
     };
 
     service.removeContestant = function (contestant) {
-        contestants.$remove(contestant);
+        this.contestants.$remove(contestant);
     };
 });
 
 // New controller for horses
 
-app.controller('HorseCtrl', function (HorsesService) {
+app.controller('HorseCtrl', ["HorsesService","ContestantsService",function (HorsesService, ContestantsService) {
     var main = this;
-    main.newHorse = {lane: '', name: '', rating: '', position: ''};
+    main.newHorse = {lane: '', name: '', rating: '', distance: '0', position: ''};
     main.currentHorse = null;
     main.horses = HorsesService.getHorses();
 
     main.addHorse = function () {
         HorsesService.addHorse(angular.copy(main.newHorse));
-        main.newHorse = {lane: '', name: '', rating: '', position: ''};
+        main.newHorse = {lane: '', name: '', rating: '', distance: '0', position: ''};
     }; 
 
     main.updateHorse = function (Horse) {
@@ -76,38 +76,72 @@ app.controller('HorseCtrl', function (HorsesService) {
         HorsesService.removeHorse(Horse);
     };
 
-    main.incrementPosition = function () {
-        main.currentHorse.position = parseInt(main.currentHorse.position, 10) + 1;
-        main.updateHorse(main.currentHorse);
+    var incrementDistance = function (horse) {
+        horse.distance = parseInt(horse.distance, 10) + Math.floor((Math.random() * 10) + 1);;
     };
 
-    main.decrementPosition = function () {
-        main.currentHorse.position = parseInt(main.currentHorse.position, 10) - 1;
-        main.updateHorse(main.currentHorse);
+
+    main.startRace = function (num) {
+        var distances = [];
+        var winner;
+        HorsesService.rank = 1;
+
+        for (var j = 0; j < HorsesService.horses.length;j++){
+            HorsesService.horses[j].distance = 0;
+            HorsesService.horses[j].position = 0;
+        }
+
+        for(var i =0; i< num; i++){
+            for (var j = 0; j < HorsesService.horses.length;j++){
+                incrementDistance(HorsesService.horses[j]);
+                if(HorsesService.horses[j].distance >= num && HorsesService.horses[j].position == 0){
+                    if (HorsesService.rank ==1) {
+                        winner = HorsesService.horses[j].name;
+                    }
+                    HorsesService.horses[j].position = HorsesService.rank;
+                    HorsesService.rank++;
+                }
+            }
+        }
+        console.log(winner);
+        for (var j = 0; j < ContestantsService.contestants.length;j++){
+            if (ContestantsService.contestants[j].horse === winner) {
+                ContestantsService.contestants[j].isWinner = true;
+                ContestantsService.contestants[j].balance = parseInt(ContestantsService.contestants[j].balance) + parseInt(ContestantsService.contestants[j].score);
+            } else {
+                ContestantsService.contestants[j].isWinner = false;
+                ContestantsService.contestants[j].balance = parseInt(ContestantsService.contestants[j].balance) - parseInt(ContestantsService.contestants[j].score);
+            }
+        }
     };
-});
+}]);
 
 
 // Horse service
-
+    
 app.service('HorsesService', function ($firebaseArray, FIREBASE_URI) {
     var service = this;
     var ref = new Firebase(FIREBASE_URI + "/horses");
-    var horses = $firebaseArray(ref);
+    this.horses = $firebaseArray(ref);
+    this.rank=1;
 
     service.getHorses = function () {
-        return horses;
+        return this.horses;
     };
 
     service.addHorse = function (horse) {
-        horses.$add(horse);
+        this.horses.$add(horse);
     };
 
     service.updateHorse = function (horse) {
-        horses.$save(horse);
+        this.horses.$save(horse);
     };
 
     service.removeHorse = function (horse) {
-        horses.$remove(horse);
+        this.horses.$remove(horse);
     };
+
 });
+
+
+
